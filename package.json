@@ -1,0 +1,20 @@
+{
+  "name": "aula2910-crud-oem-mysql",
+  "version": "1.0.0",
+  "description": "aula2910-CRUD- OEM.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch ./src/index.js",
+    "test": "cross-env TEST=true node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cross-env": "^10.1.0",
+    "express": "^5.1.0",
+    "jest": "^30.2.0",
+    "mysql2": "^3.15.3",
+    "sequelize": "^6.37.7"
+  }
+}
