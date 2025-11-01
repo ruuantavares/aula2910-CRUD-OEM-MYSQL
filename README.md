@@ -116,7 +116,8 @@ Criar um arquivo backup_nome_loja.sh
 dentro:
 
     #!/bin/bash
-
+    #/home/senac/backups_loja.sh
+    #*/1 * * * * /usr/bin/bash /home/senac/backups_banco/backup_loja.sh
     TIMESTAMP=$(date +%Y_%m_%d_%H_%M_%S)
     PATH="/home/senac/backups_banco"
     ARQUIVO_BACKUP="${PATH}/${TIMESTAMP}_loja.sql"
