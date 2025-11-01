@@ -102,7 +102,9 @@ cola o script do crontab.guru (*/1 * * * *)
 coloca o caminho do programa que executa o script (/home/senac/backups_banco/backup_loja.sh)
 
 # exemplo 
-(*/1 * * * * /usr/bin/bash /home/senac/backups_banco/backup_loja.sh)
+
+periodo       caminho                                script
+*/1 * * * * /usr/bin/bash /home/senac/backups_banco/backup_loja.sh
 
 para assistir o script rodando no tempo programado (*/1 * * * *   a cada 1 minuto)
 
