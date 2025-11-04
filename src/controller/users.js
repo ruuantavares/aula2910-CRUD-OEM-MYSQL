@@ -8,7 +8,7 @@ class ControllerUser {
     FindAll(req, res) { //se nao for usar o primeiro parametro colocar um '_'
         try {
             const user = ServiceUser.FindAll()
-            res.send({ user })
+            res.status(200).send({ user })
 
         } catch (error) {
             res.status(500).send({ error: error.message })
@@ -21,7 +21,7 @@ class ControllerUser {
             const id = req.params.id
             const user = await ServiceUser.FindOne(id)
 
-            res.send({ user })
+            res.status(200).send({ user })
         } catch (error) {
             res.status(500).send({ error: error.message })
         }
