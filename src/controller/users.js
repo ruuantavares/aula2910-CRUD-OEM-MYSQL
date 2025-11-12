@@ -27,7 +27,7 @@ class ControllerUser {
     try {
       const { nome, email, senha, ativo } = req.body;
 
-      await ServiceUser.Create(nome, email, senha, ativo);
+      await ServiceUser.Create(nome, email, senha, ativo, 1);
 
       res.status(201).send();
     } catch (error) {

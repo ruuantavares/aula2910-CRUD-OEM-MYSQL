@@ -1,7 +1,11 @@
 import User from "../model/users.js";
 import jwt from "jsonwebtoken";
+import bcrypt from 'bcrypt'
+
 
 const JWT_SEGREDO = "M3uS3GR3D0";
+const SALT = 10
+
 
 class ServiceUser {
   async FindAll() {
@@ -23,16 +27,20 @@ class ServiceUser {
     return user;
   }
 
-  async Create(nome, email, senha, ativo) {
+  async Create(nome, email, senha, ativo, permissao) {
     //verificar se o nome é valido
     if (!nome || !email || !senha) {
       throw new Error("Favor preencher todos os campos");
     }
+
+    const senhaCriptografada = await bcrypt.hash(String(senha), SALT)
+
     await User.create({
       nome,
       email,
-      senha,
+      senha: senhaCriptografada,
       ativo,
+      permissao
     });
   }
 
@@ -42,17 +50,20 @@ class ServiceUser {
       throw new Error("Favor informar um ID");
     }
 
-    const user = await User.findByPk(id);
+    const oldUser = await User.findByPk(id);
 
-    if (!user) {
+    if (!oldUser) {
       throw new Error(`Usuario ${id} não encontrado`);
     }
 
-    user.nome = nome;
-    user.email = email;
-    user.senha = senha;
+    oldUser.nome = nome
+    oldUser.email = email
+    oldUser.senha = senha
+      ? await bcrypt.hash(String(senha), SALT)
+      : oldUser.senha 
 
-    return user.save();
+
+    return oldUser.save();
   }
 
   async Delete(id) {
@@ -67,7 +78,7 @@ class ServiceUser {
       throw new Error(`Usuario ${id} não encontrado`);
     }
 
-    return user.destroy(id);
+    return user.destroy();
   }
 
   async Login(email, senha) {
@@ -75,14 +86,16 @@ class ServiceUser {
       throw new Error("Email ou senha inválidos.");
     }
     const user = await User.findOne({ where: { email } });
-    if (!user || user.senha !== senha) {
+    if (!user 
+      || !(await bcrypt.compare(String(senha), user.senha ))
+    ) {
       throw new Error("Email ou senha inválidos.");
     }
 
     //criar o token
     return jwt.sign({ 
         id: user.id,
-         nome: user.nome },
+         nome: user.nome, permissao: User.permissao },
           JWT_SEGREDO, 
           { expiresIn: 60 * 60,
     });
